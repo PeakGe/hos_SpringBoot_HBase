@@ -27,12 +27,14 @@ public class HosDataSourceConfig {
     @Primary
     public DataSource hosDataSource() throws IOException {
         ResourceLoader loader = new DefaultResourceLoader();
+
         //1.获取datasource相关配置信息的输入流
         InputStream inputStream = loader.getResource("classpath:application.properties").getInputStream();
         Properties properties = new Properties();
         properties.load(inputStream);
         Set<Object> keys = properties.keySet();
         Properties dsProperties = new Properties();
+
         //2.将以"datasource"开头的属性信息放到dsProperties中
         for(Object key:keys){
             if(key.toString().startsWith("datasource")){
@@ -52,9 +54,11 @@ public class HosDataSourceConfig {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(phoenixDataSource);
         ResourceLoader loader = new DefaultResourceLoader();
+
         //1.读取mybatis相关配置文件mybatis-config.xml
         String resource = "classpath:mybatis-config.xml";
         factoryBean.setConfigLocation(loader.getResource(resource));
+
         //2.获取sqlSessionFactory的实例
         factoryBean.setSqlSessionFactoryBuilder(new SqlSessionFactoryBuilder());
         return factoryBean.getObject();
